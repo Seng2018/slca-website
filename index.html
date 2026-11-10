@@ -274,6 +274,16 @@ footer h3{color:#fff; font-size:1rem}
 .adminhead h2{font-size:1.3rem; margin:0; flex:1}
 .adminx{background:transparent; border:1.5px solid var(--line); color:var(--ink); width:38px; height:38px; border-radius:9px; font-size:1.2rem; line-height:1; cursor:pointer; flex:none}
 .adminpanel h3{margin:24px 0 6px; font-size:1.02rem}
+/* admin access-code gate (Founder, 10 Nov 2026): a small centred prompt shown
+   before the admin panel opens; styled with the page's own surface, line,
+   accent and button styles. The panel itself is unchanged. */
+.gatecard{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:min(380px,calc(100% - 32px)); background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:24px}
+.gatecard label{font-weight:700; display:block; margin-bottom:10px}
+.gatecard input{font:inherit; width:100%; padding:11px; border-radius:9px; border:1.5px solid var(--line); background:var(--surface); color:var(--ink)}
+.gateerr{color:#b3261e; font-weight:700; margin:12px 0 0}
+@media (prefers-color-scheme: dark){ .gateerr{color:#ff9d94} }
+.gatebtns{display:flex; gap:10px; margin-top:18px}
+.gatebtns .abtn{margin-top:0}
 .secrow{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line)}
 .secrow span{flex:1; font-size:.95rem}
 .statebtn{font:inherit; font-size:.82rem; font-weight:800; padding:6px 13px; border-radius:999px; border:1.5px solid var(--accent); background:var(--accent); color:var(--accent-ink); cursor:pointer; min-width:88px}
@@ -1145,6 +1155,19 @@ html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
     </div>
   </div>
 </footer>
+
+<div class="adminwrap" id="adminGate" hidden>
+  <div class="adminscrim" id="adminGateScrim"></div>
+  <form class="gatecard" id="adminGateForm" role="dialog" aria-modal="true" aria-labelledby="adminGateLabel">
+    <label id="adminGateLabel" for="adminGateInput"></label>
+    <input type="password" id="adminGateInput" autocomplete="off" />
+    <p class="gateerr" id="adminGateError" hidden></p>
+    <div class="gatebtns">
+      <button type="submit" class="abtn solid" id="adminGateConfirm"></button>
+      <button type="button" class="abtn" id="adminGateCancel"></button>
+    </div>
+  </form>
+</div>
 
 <div class="adminwrap" id="adminWrap" hidden>
   <div class="adminscrim" id="adminScrim"></div>
@@ -2164,9 +2187,9 @@ document.getElementById("cpBtn").addEventListener("click",function(){
 
 /* ---------- founder admin dashboard (this visit only — nothing is sent or stored) ---------- */
 var ADM={
-lo:{title:"ແຜງຄວບຄຸມຂອງຜູ້ກໍ່ຕັ້ງ",sech:"ພາກສ່ວນຂອງໜ້າ — ສະແດງ ຫຼື ເຊື່ອງ",shown:"ສະແດງຢູ່",hiddenL:"ເຊື່ອງໄວ້",edith:"ແກ້ໄຂຂໍ້ຄວາມ",editBtn:"ເປີດການແກ້ໄຂຂໍ້ຄວາມໃນໜ້າ",note:"ແຜງນີ້ແມ່ນເຄື່ອງມືເບິ່ງໜ້າເວັບເທົ່ານັ້ນ: ໃຜກໍເປີດໄດ້, ແລະ ມັນປ່ຽນສະເພາະສິ່ງທີ່ທ່ານເຫັນໃນໜ້າຈໍຂອງທ່ານເອງໃນຮອບເປີດນີ້ — ບໍ່ໄດ້ປ່ຽນໜ້າເວັບທີ່ຜູ້ອື່ນເຫັນ, ແລະ ການປ່ຽນແປງຈະລ້າງອອກເມື່ອໂຫຼດໜ້າໃໝ່. ດາວໂຫຼດໄຟລ໌ການຕັ້ງຄ່າເພື່ອເກັບບັນທຶກການປ່ຽນແປງໄວ້, ຫຼື ສົ່ງມັນກັບມາ ແລ້ວການປ່ຽນແປງຈະຖືກຝັງເຂົ້າໃນໜ້າຢ່າງຖາວອນ. ການແກ້ໄຂທີ່ບັນທຶກດ້ວຍຕົນເອງ ແລະ ເຫັນກົງກັນສຳລັບທຸກຄົນ ຈະມາພ້ອມເວັບໄຊເຕັມຮູບແບບທີ່ມີການເຂົ້າສູ່ລະບົບຂອງຜູ້ກໍ່ຕັ້ງ.",download:"ດາວໂຫຼດໄຟລ໌ການຕັ້ງຄ່າ (.json)",reset:"ເລີ່ມໃໝ່ທັງໝົດ (ໂຫຼດໜ້າໃໝ່)",exit:"ອອກຈາກແຜງຄວບຄຸມ",regh:"ບັນຊີລົງທະບຽນ — ການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້",regtotal:"ຈຳນວນທັງໝົດໃນບັນຊີລົງທະບຽນຂອງໂຄງການ",regloading:"ກຳລັງອ່ານຈຳນວນຈາກບັນຊີລົງທະບຽນຂອງໂຄງການ…",regempty:"ຍັງບໍ່ມີການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້ໃນຮອບເປີດນີ້. ບັນຊີລົງທະບຽນເຕັມຮູບແບບ — ທຸກຊື່, ຄົ້ນຫາ ແລະ ສົ່ງອອກໄດ້ — ຢູ່ໃນເວັບໄຊເຕັມຮູບແບບ.",regcsv:"ດາວໂຫຼດການລົງທະບຽນທີ່ບັນທຶກໃນຮອບນີ້ (.csv)",regnote:"ຈຳນວນຂ້າງເທິງອ່ານສົດຈາກບັນຊີລົງທະບຽນດຽວກັນກັບທີ່ເວັບໄຊເຕັມຮູບແບບໃຊ້. ລາຍການສະແດງການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້ໃນຮອບເປີດນີ້, ພ້ອມລະຫັດແນະນຳທີ່ແຕ່ລະຄົນໄດ້ຮັບ.",regsearch:"ຄົ້ນຫາ ຊື່, ເບີຕິດຕໍ່, ແຂວງ ຫຼື ລະຫັດ"},
-en:{title:"Founder admin dashboard",sech:"Page sections — show or hide",shown:"Shown",hiddenL:"Hidden",edith:"Edit the wording",editBtn:"Turn on text editing on the page",note:"This panel is a viewing tool only: anyone can open it, and it changes only what you see on your own screen in this visit — it does not change the page other visitors see, and the changes clear when the page is reloaded. Download the settings file to keep a record of them, or send it back and the changes can be built into the page permanently. Editing that saves by itself, and applies for everyone, arrives with the full hosted website and its founder sign-in.",download:"Download settings file (.json)",reset:"Reset everything (reload page)",exit:"Leave admin mode",regh:"People Register — registrations saved from this page",regtotal:"Total in the project register",regloading:"Reading the project register total…",regempty:"No registration has been saved from this page in this visit yet. The full register — every name, with search and export — is kept on the full website.",regcsv:"Download this visit's saved registrations (.csv)",regnote:"The total above is read live from the same project register the full website uses. The list shows the registrations saved from this page during this visit, with the referral code each person was issued.",regsearch:"Search name, contact, province or code"},
-fr:{title:"Tableau de bord du Fondateur",sech:"Sections de la page — afficher ou masquer",shown:"Affichée",hiddenL:"Masquée",edith:"Modifier les textes",editBtn:"Activer la modification des textes sur la page",note:"Ce panneau est un simple outil d'affichage : tout le monde peut l'ouvrir, et il ne modifie que ce que vous voyez sur votre propre écran pendant cette visite — il ne change pas la page que voient les autres visiteurs, et les modifications disparaissent au rechargement. Téléchargez le fichier de réglages pour en garder une trace, ou renvoyez-le pour que les modifications soient intégrées durablement à la page. La modification avec enregistrement automatique, valable pour tous, viendra avec le site hébergé complet et sa connexion du Fondateur.",download:"Télécharger le fichier de réglages (.json)",reset:"Tout réinitialiser (recharger la page)",exit:"Quitter le mode administrateur",regh:"Registre des personnes — inscriptions enregistrées depuis cette page",regtotal:"Total dans le registre du projet",regloading:"Lecture du total du registre du projet…",regempty:"Aucune inscription n'a encore été enregistrée depuis cette page pendant cette visite. Le registre complet — chaque nom, avec recherche et export — est conservé sur le site complet.",regcsv:"Télécharger les inscriptions enregistrées pendant cette visite (.csv)",regnote:"Le total ci-dessus est lu en direct dans le même registre du projet que celui du site complet. La liste montre les inscriptions enregistrées depuis cette page pendant cette visite, avec le code de parrainage remis à chacune.",regsearch:"Rechercher un nom, un contact, une province ou un code"}
+lo:{title:"ແຜງຄວບຄຸມຂອງຜູ້ກໍ່ຕັ້ງ",sech:"ພາກສ່ວນຂອງໜ້າ — ສະແດງ ຫຼື ເຊື່ອງ",shown:"ສະແດງຢູ່",hiddenL:"ເຊື່ອງໄວ້",edith:"ແກ້ໄຂຂໍ້ຄວາມ",editBtn:"ເປີດການແກ້ໄຂຂໍ້ຄວາມໃນໜ້າ",note:"ແຜງນີ້ແມ່ນເຄື່ອງມືເບິ່ງໜ້າເວັບເທົ່ານັ້ນ: ໃຜກໍເປີດໄດ້, ແລະ ມັນປ່ຽນສະເພາະສິ່ງທີ່ທ່ານເຫັນໃນໜ້າຈໍຂອງທ່ານເອງໃນຮອບເປີດນີ້ — ບໍ່ໄດ້ປ່ຽນໜ້າເວັບທີ່ຜູ້ອື່ນເຫັນ, ແລະ ການປ່ຽນແປງຈະລ້າງອອກເມື່ອໂຫຼດໜ້າໃໝ່. ດາວໂຫຼດໄຟລ໌ການຕັ້ງຄ່າເພື່ອເກັບບັນທຶກການປ່ຽນແປງໄວ້, ຫຼື ສົ່ງມັນກັບມາ ແລ້ວການປ່ຽນແປງຈະຖືກຝັງເຂົ້າໃນໜ້າຢ່າງຖາວອນ. ການແກ້ໄຂທີ່ບັນທຶກດ້ວຍຕົນເອງ ແລະ ເຫັນກົງກັນສຳລັບທຸກຄົນ ຈະມາພ້ອມເວັບໄຊເຕັມຮູບແບບທີ່ມີການເຂົ້າສູ່ລະບົບຂອງຜູ້ກໍ່ຕັ້ງ.",download:"ດາວໂຫຼດໄຟລ໌ການຕັ້ງຄ່າ (.json)",reset:"ເລີ່ມໃໝ່ທັງໝົດ (ໂຫຼດໜ້າໃໝ່)",exit:"ອອກຈາກແຜງຄວບຄຸມ",regh:"ບັນຊີລົງທະບຽນ — ການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້",regtotal:"ຈຳນວນທັງໝົດໃນບັນຊີລົງທະບຽນຂອງໂຄງການ",regloading:"ກຳລັງອ່ານຈຳນວນຈາກບັນຊີລົງທະບຽນຂອງໂຄງການ…",regempty:"ຍັງບໍ່ມີການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້ໃນຮອບເປີດນີ້. ບັນຊີລົງທະບຽນເຕັມຮູບແບບ — ທຸກຊື່, ຄົ້ນຫາ ແລະ ສົ່ງອອກໄດ້ — ຢູ່ໃນເວັບໄຊເຕັມຮູບແບບ.",regcsv:"ດາວໂຫຼດການລົງທະບຽນທີ່ບັນທຶກໃນຮອບນີ້ (.csv)",regnote:"ຈຳນວນຂ້າງເທິງອ່ານສົດຈາກບັນຊີລົງທະບຽນດຽວກັນກັບທີ່ເວັບໄຊເຕັມຮູບແບບໃຊ້. ລາຍການສະແດງການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້ໃນຮອບເປີດນີ້, ພ້ອມລະຫັດແນະນຳທີ່ແຕ່ລະຄົນໄດ້ຮັບ.",regsearch:"ຄົ້ນຫາ ຊື່, ເບີຕິດຕໍ່, ແຂວງ ຫຼື ລະຫັດ",gatePrompt:"ກະລຸນາໃສ່ລະຫັດເຂົ້າໃຊ້ Admin",gateWrong:"ລະຫັດບໍ່ຖືກຕ້ອງ",gateConfirm:"ຢືນຢັນ",gateCancel:"ຍົກເລີກ"},
+en:{title:"Founder admin dashboard",sech:"Page sections — show or hide",shown:"Shown",hiddenL:"Hidden",edith:"Edit the wording",editBtn:"Turn on text editing on the page",note:"This panel is a viewing tool only: anyone can open it, and it changes only what you see on your own screen in this visit — it does not change the page other visitors see, and the changes clear when the page is reloaded. Download the settings file to keep a record of them, or send it back and the changes can be built into the page permanently. Editing that saves by itself, and applies for everyone, arrives with the full hosted website and its founder sign-in.",download:"Download settings file (.json)",reset:"Reset everything (reload page)",exit:"Leave admin mode",regh:"People Register — registrations saved from this page",regtotal:"Total in the project register",regloading:"Reading the project register total…",regempty:"No registration has been saved from this page in this visit yet. The full register — every name, with search and export — is kept on the full website.",regcsv:"Download this visit's saved registrations (.csv)",regnote:"The total above is read live from the same project register the full website uses. The list shows the registrations saved from this page during this visit, with the referral code each person was issued.",regsearch:"Search name, contact, province or code",gatePrompt:"Please enter the Admin access code",gateWrong:"Wrong code.",gateConfirm:"Confirm",gateCancel:"Cancel"},
+fr:{title:"Tableau de bord du Fondateur",sech:"Sections de la page — afficher ou masquer",shown:"Affichée",hiddenL:"Masquée",edith:"Modifier les textes",editBtn:"Activer la modification des textes sur la page",note:"Ce panneau est un simple outil d'affichage : tout le monde peut l'ouvrir, et il ne modifie que ce que vous voyez sur votre propre écran pendant cette visite — il ne change pas la page que voient les autres visiteurs, et les modifications disparaissent au rechargement. Téléchargez le fichier de réglages pour en garder une trace, ou renvoyez-le pour que les modifications soient intégrées durablement à la page. La modification avec enregistrement automatique, valable pour tous, viendra avec le site hébergé complet et sa connexion du Fondateur.",download:"Télécharger le fichier de réglages (.json)",reset:"Tout réinitialiser (recharger la page)",exit:"Quitter le mode administrateur",regh:"Registre des personnes — inscriptions enregistrées depuis cette page",regtotal:"Total dans le registre du projet",regloading:"Lecture du total du registre du projet…",regempty:"Aucune inscription n'a encore été enregistrée depuis cette page pendant cette visite. Le registre complet — chaque nom, avec recherche et export — est conservé sur le site complet.",regcsv:"Télécharger les inscriptions enregistrées pendant cette visite (.csv)",regnote:"Le total ci-dessus est lu en direct dans le même registre du projet que celui du site complet. La liste montre les inscriptions enregistrées depuis cette page pendant cette visite, avec le code de parrainage remis à chacune.",regsearch:"Rechercher un nom, un contact, une province ou un code",gatePrompt:"Veuillez saisir le code d'accès Admin",gateWrong:"Code incorrect.",gateConfirm:"Confirmer",gateCancel:"Annuler"}
 };
 var SECTIONS=[
  {id:"story",lo:"ເລື່ອງເລົ່າຂອງພໍ່ແມ່",en:"The Parents' Story",fr:"Le récit des parents"},
@@ -2223,8 +2246,60 @@ function updateAdminLabels(){
   renderRegister();
 }
 var adminWrap=document.getElementById("adminWrap");
-function openAdmin(){ adminWrap.hidden=false; updateAdminLabels(); refreshRegisterTotal(); }
+/* Admin access-code gate (Founder, 10 Nov 2026 — "lock it with a prompt, but
+   let me in sometime"): clicking Admin no longer opens the panel directly.
+   Only the SHA-256 hash of the access code is held here — never the code
+   itself. A correct entry opens the panel exactly as before and is
+   remembered in an in-memory flag for the rest of this page visit only
+   (nothing is stored); a wrong entry shows a refusal line in the current
+   language and opens nothing — no panel, no data, no count. */
+var ADMIN_CODE_SHA256="4b9a7f50c0bb198c6f5414c5a8459f5d216d34ab521ea94c060ea35cac66f900";
+var adminUnlocked=false;
+var adminGate=document.getElementById("adminGate");
+var adminGateInput=document.getElementById("adminGateInput");
+var adminGateError=document.getElementById("adminGateError");
+function updateGateLabels(){
+  var a=A();
+  document.getElementById("adminGateLabel").textContent=a.gatePrompt;
+  document.getElementById("adminGateConfirm").textContent=a.gateConfirm;
+  document.getElementById("adminGateCancel").textContent=a.gateCancel;
+}
+function showAdminGate(){
+  updateGateLabels();
+  adminGateError.hidden=true; adminGateError.textContent="";
+  adminGateInput.value="";
+  adminGate.hidden=false;
+  adminGateInput.focus();
+}
+function hideAdminGate(){ adminGate.hidden=true; }
+function openAdminPanel(){ adminWrap.hidden=false; updateAdminLabels(); refreshRegisterTotal(); }
+function openAdmin(){ if(adminUnlocked){ openAdminPanel(); } else { showAdminGate(); } }
 function closeAdmin(){ adminWrap.hidden=true; }
+document.getElementById("adminGateForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var entered=adminGateInput.value;
+  if(!window.crypto||!crypto.subtle||!crypto.subtle.digest){
+    adminGateError.textContent=A().gateWrong; adminGateError.hidden=false; return;
+  }
+  crypto.subtle.digest("SHA-256",new TextEncoder().encode(entered)).then(function(buf){
+    var bytes=new Uint8Array(buf), hex="";
+    for(var i=0;i<bytes.length;i++){ hex+=("0"+bytes[i].toString(16)).slice(-2); }
+    if(hex===ADMIN_CODE_SHA256){
+      adminUnlocked=true;
+      hideAdminGate();
+      openAdminPanel();
+    } else {
+      adminGateError.textContent=A().gateWrong; adminGateError.hidden=false;
+      adminGateInput.select();
+    }
+  },function(){
+    adminGateError.textContent=A().gateWrong; adminGateError.hidden=false;
+  });
+});
+document.getElementById("adminGateCancel").addEventListener("click",hideAdminGate);
+document.getElementById("adminGateScrim").addEventListener("click",hideAdminGate);
+document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&!adminGate.hidden) hideAdminGate(); });
+updateGateLabels();
 document.getElementById("adminOpen").addEventListener("click",openAdmin);
 document.getElementById("adminClose").addEventListener("click",closeAdmin);
 document.getElementById("adminScrim").addEventListener("click",closeAdmin);
