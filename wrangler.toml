@@ -1,0 +1,7 @@
+name = "slca-website"
+main = "worker.js"
+compatibility_date = "2024-11-06"
+
+[assets]
+directory = "."
+binding = "ASSETS"
