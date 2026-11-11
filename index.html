@@ -80,8 +80,8 @@ section p{font-size:1.19rem}
    follows it (order 2), on desktop and phone alike; it is the same single
    switcher, styling and applyUI wiring unchanged. (The visitor counter
    stood after both in the header earlier on 11 Nov 2026; the Founder then
-   moved it to the footer, beside the Contact email — see the .visitorbtn
-   rule.) Scroll-margin below follows the tightened header height
+   moved it to the footer, where it now stands as its own footer tab at
+   the same level as Contact — see the .footvis rule.) Scroll-margin below follows the tightened header height
    (216px → 178px). */
 .tabnav{order:4; flex:1 1 100%; margin-left:0; display:flex; gap:3px 5px; flex-wrap:wrap; align-items:center; justify-content:flex-start}
 .tabbtn{background:transparent; border:0; color:#f3efe2; font:inherit; font-size:.9rem; font-weight:700; padding:7px 10px; border-radius:8px; cursor:pointer; display:inline-flex; gap:7px; align-items:center; text-decoration:none; white-space:nowrap}
@@ -137,17 +137,28 @@ section[id]{scroll-margin-top:224px}
 .langbar{display:flex; border:1px solid rgba(255,255,255,.4); border-radius:999px; overflow:hidden; margin-left:8px; order:2}
 .langbar button{background:transparent; color:#f3efe2; border:0; padding:7px 13px; font:inherit; font-size:.88rem; font-weight:700; cursor:pointer}
 .langbar button[aria-pressed="true"]{background:var(--gold); color:#231a02}
-/* visitor counter button (Founder, 11 Nov 2026; moved to the FOOTER the
-   same day): stands in the footer beside the Contact email link, styled as
-   a small gold pill button in the footer's manner. The number comes from
-   the actions endpoint (markvisit / getvisitorcount); until a number
-   arrives — or if the call fails — the button shows just its label, and
-   it never blocks the page. */
-.footcontactrow{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:4px}
-.visitorbtn{display:inline-flex; align-items:center; gap:7px; background:var(--gold); color:#231a02; border:2px solid #231a02; border-radius:999px; padding:5px 12px; font:inherit; font-size:.85rem; font-weight:700; white-space:nowrap; cursor:default; box-shadow:0 3px 8px rgba(0,0,0,.25)}
-.visitorbtn svg{flex:none; opacity:.9}
-.visitorbtn b{font-variant-numeric:tabular-nums}
-html[lang="lo"] .visitorbtn{font-family:"Phetsarath OT","Phetsarath","Noto Sans Lao",sans-serif}
+/* visitor counter — footer TAB at the same level as Contact (Founder,
+   11 Nov 2026): stands as its own column in the footer's row of columns,
+   a sibling of the Contact column, with its own heading at the same size
+   and weight as the Contact heading (the shared footer h3 rule). Under
+   the heading: the eye mark with the visitors number, and the visits
+   total as a smaller second line. The numbers come from the website's
+   same-origin endpoints (GET /api/visitors, POST /api/visit); until a
+   number arrives — or if the call fails — the heading shows with the
+   number blank, and it never blocks the page. */
+.footvis{margin:0}
+.footvis-main{display:inline-flex; align-items:center; gap:8px; color:var(--gold-soft)}
+.footvis-main svg{flex:none; opacity:.9}
+.footvis-main b{font-size:1.35rem; font-weight:800; line-height:1.2; font-variant-numeric:tabular-nums}
+.footvis-sub{display:block; margin-top:5px; font-size:.88rem; color:#a9a58e}
+.footvis-sub b{font-variant-numeric:tabular-nums; color:#d9d4bf}
+/* visitors' countries with flags (Founder, 11 Nov 2026): a line under the
+   visitors number with the flag of each of the top five visitor countries
+   and its visitor count, separated by " · " — shown only when the counter
+   response carries a countries list; an empty list leaves the line hidden. */
+.footvis-flags{display:block; margin-top:6px; font-size:1.05rem; line-height:1.55; color:#d9d4bf; font-variant-numeric:tabular-nums}
+.footvis-flags[hidden]{display:none}
+html[lang="lo"] .footvis{font-family:"Phetsarath OT","Phetsarath","Noto Sans Lao",sans-serif}
 /* under-construction notice — a gold pill button at the bottom of the page, in the footer */
 .construction{background:transparent; text-align:center; padding:26px 0 8px; position:relative}
 .construction .uc-in{display:inline-flex; align-items:center; justify-content:center; gap:8px 10px; flex-wrap:wrap; max-width:1120px; margin:0 auto; background:var(--gold); color:#231a02; border:2px solid #231a02; border-radius:999px; padding:10px 24px 12px; box-shadow:0 6px 16px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.5); position:relative; overflow:hidden}
@@ -302,7 +313,7 @@ form.reg button[type=submit][disabled]{opacity:.55; cursor:wait}
 .ctaend p{color:#e6e1cf; max-width:44em}
 footer{background:var(--green-950); color:#d9d4bf; padding:44px 0 34px; margin-top:0}
 footer a{color:var(--gold-soft)}
-footer .cols{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:26px}
+footer .cols{display:grid; grid-template-columns:1.2fr 1fr 1fr 1fr; gap:26px}
 footer h3{color:#fff; font-size:1rem}
 .origin{font-size:.82rem; color:#8f8b74; margin:10px 0 0; letter-spacing:.01em}
 .credits{font-size:.83rem; color:var(--ink2)}
@@ -329,6 +340,12 @@ footer h3{color:#fff; font-size:1rem}
 .gatebtns .abtn{margin-top:0}
 .secrow{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--line)}
 .secrow span{flex:1; font-size:.95rem}
+/* admin Visitors section — one row per visitor country (Founder, 11 Nov
+   2026): flag, two-letter country code, visitor count, in received order */
+.viscountry{display:flex; align-items:center; gap:10px; padding:7px 0; border-bottom:1px solid var(--line); font-size:.95rem}
+.viscountry .vcflag{font-size:1.15rem; line-height:1}
+.viscountry .vccode{font-weight:800; letter-spacing:.04em}
+.viscountry .vccount{margin-left:auto; font-variant-numeric:tabular-nums; color:var(--ink2)}
 .statebtn{font:inherit; font-size:.82rem; font-weight:800; padding:6px 13px; border-radius:999px; border:1.5px solid var(--accent); background:var(--accent); color:var(--accent-ink); cursor:pointer; min-width:88px}
 .statebtn.off{background:transparent; color:var(--ink2); border-color:var(--line)}
 .abtn{font:inherit; font-weight:700; padding:11px 16px; border-radius:9px; border:1.5px solid var(--accent); background:transparent; color:var(--accent); cursor:pointer; width:100%; margin-top:10px}
@@ -465,7 +482,7 @@ html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
     </button>
     <!-- HEADER MENU — ALL IN LINE, AS BEFORE (Founder, 10 Nov 2026: "Just the header menu, you can make it as before show all in line"): the five grouped dropdown tabs are replaced by ONE flat line of direct links in page order — today's correct set ONLY (every visible article/section; nothing deleted, nothing hidden: NO "16 Promises" entry, NO Podcast, NO Mapping entry). The Investor Room stands in the same line as a direct link. Desktop shows the links in line on their own row under the brand row (wrapping cleanly to a second line with the same alignment when the full set cannot fit one line); the phone Menu button opens the same links as an aligned list.
          LAOS TAB HIDDEN (Founder, same instruction — "hide the tab Laos where we hide his content"): the Laos tab/group is REMOVED from this menu entirely (desktop line and phone menu), because its Lao Mapping content is hidden. The Laos in Numbers SECTION (#data) itself STAYS STANDING on the page body — only its header entry is gone while the tab is hidden. To restore in one step: re-add the Laos group here with its #data link (key data_k) and the #mapping link (key map_h) when the Mapping returns or on the Founder's word. See the LAO MAPPING HIDDEN note above the #mapping section below.
-         TIGHTENING + LANGUAGE SWITCHER (Founder, same day, follow-up): the line is tightened (smaller link font and padding, narrower gaps, header band widened to 1360px — logo and Lao lettering untouched) so the 15 links stand on TWO BALANCED rows at desktop width, no third row and no orphan link; and the three-language selector (ລາວ / EN / FR) stands in the right-side cluster of this top header — the Admin button first via flex order, the switcher after it, still the page's only switcher, same styling and applyUI wiring. (The visitor counter is no longer in the header — the Founder moved it to the footer, as a button beside the Contact email, 11 Nov 2026.) Full note in the header-menu CSS comment above. -->
+         TIGHTENING + LANGUAGE SWITCHER (Founder, same day, follow-up): the line is tightened (smaller link font and padding, narrower gaps, header band widened to 1360px — logo and Lao lettering untouched) so the 15 links stand on TWO BALANCED rows at desktop width, no third row and no orphan link; and the three-language selector (ລາວ / EN / FR) stands in the right-side cluster of this top header — the Admin button first via flex order, the switcher after it, still the page's only switcher, same styling and applyUI wiring. (The visitor counter is no longer in the header — the Founder moved it to the footer, where it stands as its own tab at the same level as Contact, 11 Nov 2026.) Full note in the header-menu CSS comment above. -->
     <nav class="tabnav" id="tabnav" aria-label="Sections">
       <a class="tabbtn direct" data-sections="story" href="#story" data-i18n="nav_story">ເລື່ອງເລົ່າຂອງພໍ່ແມ່</a>
       <a class="tabbtn direct" data-sections="journey" href="#journey" data-i18n="nav_journey">ເສັ້ນທາງຊີວິດ</a>
@@ -1205,7 +1222,11 @@ html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
       </div>
       <div>
         <h3 data-i18n="foot_contact_h">ຕິດຕໍ່</h3>
-        <p><span data-i18n="foot_contact_p">ຕິດຕໍ່ພວກເຮົາທາງອີເມວ:</span><br /><span class="footcontactrow"><a href="mailto:admin@edu-secu.com">admin@edu-secu.com</a><button type="button" class="visitorbtn" id="visitorPill"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg><span data-i18n="visitors_label">ຜູ້ເຂົ້າຊົມ</span><b id="visitorCount" hidden></b></button></span></p>
+        <p><span data-i18n="foot_contact_p">ຕິດຕໍ່ພວກເຮົາທາງອີເມວ:</span><br /><a href="mailto:admin@edu-secu.com">admin@edu-secu.com</a></p>
+      </div>
+      <div>
+        <h3 data-i18n="visitors_label">ຜູ້ເຂົ້າຊົມ</h3>
+        <p class="footvis"><span class="footvis-main"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg><b id="visitorCount" hidden></b></span><span class="footvis-sub" id="visitorVisitsLine" hidden><span data-i18n="visits_label">ການເຂົ້າຊົມ</span> <b id="visitorVisits"></b></span><span class="footvis-flags" id="visitorFlags" hidden></span></p>
       </div>
     </div>
     <p class="small" style="margin-top:26px; color:#a9a58e" data-i18n="foot_copy">© 2026 SLCA. ໜ້ານີ້ແມ່ນສະບັບສາທາລະນະສະຖິດຂອງເວັບໄຊໂຄງການ; ເວັບໄຊເຕັມຮູບແບບຈະຕາມມາຢູ່ໂດເມນຂອງຕົນເອງ.</p>
@@ -1251,6 +1272,7 @@ html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
       <p class="small" id="regNote" style="margin-top:10px"></p>
       <h3 id="visH"></h3>
       <p class="small" id="visTotals" style="margin:0 0 4px"></p>
+      <div id="visCountries"></div>
       <a class="abtn" id="visTrackBtn" href="https://dash.cloudflare.com/?to=/:account/web-analytics" target="_blank" rel="noopener" style="display:block; text-align:center; text-decoration:none"></a>
       <h3 id="editH"></h3>
       <button type="button" class="abtn" id="editToggle" aria-pressed="false"></button>
@@ -1809,10 +1831,10 @@ Object.assign(DATA.fr.ui,{
 Object.assign(DATA.lo.ui,{
  navtab_project:"ໂຄງການ",navtab_membership:"ສະມາຊິກ",navtab_community:"ຊຸມຊົນ ແລະ ການສະໜັບສະໜູນ",navtab_laos:"ປະເທດລາວ",navtab_menu:"ເມນູ"});
 
-/* ---------- visitor counter (Founder, 11 Nov 2026): footer button label ---------- */
-Object.assign(DATA.en.ui,{ visitors_label:"Visitors"});
-Object.assign(DATA.fr.ui,{ visitors_label:"Visiteurs"});
-Object.assign(DATA.lo.ui,{ visitors_label:"ຜູ້ເຂົ້າຊົມ"});
+/* ---------- visitor counter (Founder, 11 Nov 2026): footer tab heading + visits line ---------- */
+Object.assign(DATA.en.ui,{ visitors_label:"Visitors", visits_label:"Visits"});
+Object.assign(DATA.fr.ui,{ visitors_label:"Visiteurs", visits_label:"Visites"});
+Object.assign(DATA.lo.ui,{ visitors_label:"ຜູ້ເຂົ້າຊົມ", visits_label:"ການເຂົ້າຊົມ"});
 
 /* ---------- Build B strings: pilot studies, work with us, job board ---------- */
 Object.assign(DATA.en.ui,{
@@ -2248,14 +2270,89 @@ function refreshRegisterTotal(){
     if(d&&typeof d.count==="number"){ registerTotal=d; renderRegister(); }
   },function(){});
 }
-/* Website visitors (Founder, 11 Nov 2026) — totals read from the same actions
-   endpoint via getvisitorcount, refreshed each time the admin panel opens.
-   The footer button below shares the last totals read. Countries and referring
-   sites are seen in Cloudflare Web Analytics, opened by the panel's button. */
+/* Website visitors (Founder, 11 Nov 2026) — totals read from the website's
+   own same-origin endpoints: GET /api/visitors returns flat JSON
+   {visitors, visits, countries:[{code, visitors}, ...]}, refreshed each
+   time the admin panel opens. The footer Visitors tab below shares the
+   last totals read. The countries list (largest first, two-letter ISO
+   codes) is shown with flags: the top five in the footer tab, the full
+   list in the panel's Visitors section below. Referring sites are seen
+   in Cloudflare Web Analytics, opened by the panel's button. */
 var visitorTotals=null, visitorTotalsFailed=false;
+function fetchVisitorJson(url,options){
+  var ctrl=("AbortController" in window)?new AbortController():null;
+  var timer=ctrl?setTimeout(function(){ ctrl.abort(); },15000):null;
+  function done(){ if(timer) clearTimeout(timer); }
+  var opts=options||{};
+  if(ctrl) opts.signal=ctrl.signal;
+  return fetch(url,opts).then(function(r){
+    return r.json().catch(function(){return null;}).then(function(b){
+      done();
+      if(!r.ok||!b) throw new Error("HTTP "+r.status);
+      return b;
+    });
+  },function(err){ done(); throw err; });
+}
+/* Flag for a two-letter country code, built from its letters as regional-
+   indicator emoji (Founder, 11 Nov 2026) — any country works, no name
+   table. Returns "" for anything that is not exactly two letters. */
+function countryFlag(code){
+  if(typeof code!=="string") return "";
+  code=code.trim().toUpperCase();
+  if(!/^[A-Z]{2}$/.test(code)) return "";
+  return String.fromCodePoint(0x1F1E6+code.charCodeAt(0)-65,0x1F1E6+code.charCodeAt(1)-65);
+}
+function validCountries(list){
+  var out=[];
+  if(Array.isArray(list)){
+    list.forEach(function(c){
+      if(c&&typeof c.visitors==="number"&&isFinite(c.visitors)&&countryFlag(c.code)){
+        out.push({code:c.code.trim().toUpperCase(),visitors:c.visitors});
+      }
+    });
+  }
+  return out;
+}
+function validVisitorTotals(d){
+  return (d&&typeof d.visitors==="number"&&isFinite(d.visitors)&&typeof d.visits==="number"&&isFinite(d.visits))?{visitors:d.visitors,visits:d.visits,countries:validCountries(d.countries)}:null;
+}
 function showVisitorPill(n){
   var el=document.getElementById("visitorCount");
   if(el&&typeof n==="number"&&isFinite(n)){ el.textContent=fmt(n); el.hidden=false; }
+}
+function showVisitorVisits(n){
+  var line=document.getElementById("visitorVisitsLine");
+  var el=document.getElementById("visitorVisits");
+  if(el&&line&&typeof n==="number"&&isFinite(n)){ el.textContent=fmt(n); line.hidden=false; }
+}
+function showVisitorFlags(countries){
+  var el=document.getElementById("visitorFlags"); if(!el) return;
+  var top=(countries||[]).slice(0,5);
+  if(!top.length){ el.textContent=""; el.hidden=true; return; }
+  el.textContent=top.map(function(c){ return countryFlag(c.code)+" "+fmt(c.visitors); }).join(" · ");
+  el.hidden=false;
+}
+function applyVisitorTotals(d){
+  var t=validVisitorTotals(d); if(!t) return false;
+  visitorTotals=t; visitorTotalsFailed=false;
+  showVisitorPill(t.visitors);
+  showVisitorVisits(t.visits);
+  showVisitorFlags(t.countries);
+  renderVisitorTotals();
+  return true;
+}
+function renderVisitorCountries(){
+  var box=document.getElementById("visCountries"); if(!box) return;
+  box.innerHTML="";
+  var list=(visitorTotals&&visitorTotals.countries)||[];
+  list.forEach(function(c){
+    var row=document.createElement("div"); row.className="viscountry";
+    var flag=document.createElement("span"); flag.className="vcflag"; flag.textContent=countryFlag(c.code);
+    var code=document.createElement("span"); code.className="vccode"; code.textContent=c.code;
+    var count=document.createElement("span"); count.className="vccount"; count.textContent=fmt(c.visitors);
+    row.appendChild(flag); row.appendChild(code); row.appendChild(count);
+    box.appendChild(row);
+  });
 }
 function renderVisitorTotals(){
   var el=document.getElementById("visTotals"); if(!el) return;
@@ -2263,21 +2360,19 @@ function renderVisitorTotals(){
   if(visitorTotals){ el.textContent=a.visvisitors+": "+fmt(visitorTotals.visitors)+" · "+a.visvisits+": "+fmt(visitorTotals.visits); }
   else if(visitorTotalsFailed){ el.textContent=a.visunavailable; }
   else { el.textContent=a.visloading; }
+  renderVisitorCountries();
 }
 function refreshVisitorTotals(){
-  callRegisterAction("getvisitorcount",{}).then(function(d){
-    if(d&&typeof d.visitors==="number"&&typeof d.visits==="number"){
-      visitorTotals=d; visitorTotalsFailed=false;
-      showVisitorPill(d.visitors);
-    } else { visitorTotalsFailed=true; }
-    renderVisitorTotals();
-  },function(){ visitorTotalsFailed=true; renderVisitorTotals(); });
+  return fetchVisitorJson("/api/visitors").then(function(d){
+    if(!applyVisitorTotals(d)){ visitorTotalsFailed=!visitorTotals; renderVisitorTotals(); }
+  },function(){ if(!visitorTotals) visitorTotalsFailed=true; renderVisitorTotals(); });
 }
-/* Footer visitor button: the page keeps a random visitor key in localStorage
-   (no personal data), calls markvisit at most once per browser session
-   (sessionStorage flag) and shows the returned visitors number. Any failure
-   quietly falls back to getvisitorcount, and then to the label alone — the
-   button never breaks or blocks the page. */
+/* Footer Visitors tab: the page keeps a random visitor key in localStorage
+   (no personal data), POSTs it to /api/visit at most once per browser
+   session (sessionStorage flag) and shows the returned visitors number
+   (and visits total). Any failure quietly falls back to GET /api/visitors,
+   and then to the heading alone — the tab never breaks or blocks the page,
+   and a failure never clears a number already shown. */
 (function(){
   function fallback(){ refreshVisitorTotals(); }
   try{
@@ -2288,15 +2383,12 @@ function refreshVisitorTotals(){
     }catch(e){ key=null; }
     try{ marked=sessionStorage.getItem("slca_visit_marked")==="1"; }catch(e){ marked=false; }
     if(key&&!marked){
-      callRegisterAction("markvisit",{visitorKey:key}).then(function(d){
+      fetchVisitorJson("/api/visit",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({visitorKey:key})}).then(function(d){
         try{ sessionStorage.setItem("slca_visit_marked","1"); }catch(e){}
-        if(d&&typeof d.visitors==="number"){
-          showVisitorPill(d.visitors);
-          if(typeof d.visits==="number"){ visitorTotals=d; visitorTotalsFailed=false; renderVisitorTotals(); }
-        } else { fallback(); }
+        if(!applyVisitorTotals(d)){ fallback(); }
       },function(){ fallback(); });
     } else { fallback(); }
-  }catch(e){ /* the button simply keeps its label */ }
+  }catch(e){ /* the tab simply keeps its heading */ }
 })();
 document.getElementById("dlBtn").addEventListener("click",function(){
   var blob=new Blob([lastSummary],{type:"text/plain;charset=utf-8"});
