@@ -1,11 +1,15 @@
-// slca-website worker: serves the static site, and carries the visitor
-// counter between edu-secu.com and the project's register on muse.ai.
-// The counter endpoints are same-origin (/api/visitors, /api/visit), so the
-// page never has to call across origins; this worker makes the upstream
-// call itself, stamped with the muse.ai origin the register expects.
-// On /api/visit it also forwards the visitor's country, which the
-// Cloudflare edge itself reports for the request (request.cf.country) —
-// the same source Tanda Flash's admin uses for its country flags.
+// slca-website worker: serves the static site, and keeps the visitor
+// counter in a small D1 database attached to this website itself
+// (binding VISITORS_DB). The counter endpoints are same-origin
+// (/api/visitors, /api/visit), so the page never calls across origins.
+// Each visitor is one row keyed by a random browser-generated key (no
+// personal data); the visitor's country is the one the Cloudflare edge
+// itself reports for the request (request.cf.country) — the same source
+// Tanda Flash's admin uses for its country flags.
+//
+// History: this worker first tried to carry the count to the project's
+// register on muse.ai, but that endpoint refuses every server-side and
+// proxied call (three attempts, same 404), so the counter lives here.
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -16,88 +20,80 @@ export default {
     }
 
     if (url.pathname === "/api/visitors" || url.pathname === "/api/visit") {
-      const isMark = url.pathname === "/api/visit";
-      let visitorKey = "";
-      if (isMark) {
-        try {
-          const body = await request.json();
-          visitorKey = String((body && body.visitorKey) || "");
-        } catch (e) {
-          visitorKey = "";
-        }
-        if (!visitorKey) {
-          return new Response(
-            JSON.stringify({ visitors: 0, visits: 0, countries: [] }),
-            { headers: { "content-type": "application/json" } }
-          );
-        }
-      }
-
-      const upstream =
-        "https://muse.ai/spaces/v2/student-life-cycle-assurance-project/actions";
-      const args = { visitorKey: visitorKey };
-      if (isMark) {
-        const cfCountry =
-          request.cf && request.cf.country ? String(request.cf.country) : "";
-        if (/^[A-Za-z]{2}$/.test(cfCountry) && cfCountry.toUpperCase() !== "XX") {
-          args.country = cfCountry.toUpperCase();
-        }
-      }
-      // Speak to the register in the exact envelope the public page itself
-      // uses: an x-request-id header and an actionCallId in the body —
-      // calls without them are not recognised as action calls upstream.
-      const callId =
-        "pub-" +
-        Date.now().toString(36) +
-        "-" +
-        Math.random().toString(36).slice(2, 8);
-      const payload = isMark
-        ? { action: "markvisit", args: args, actionCallId: callId }
-        : { action: "getvisitorcount", args: {}, actionCallId: callId };
-
-      try {
-        const r = await fetch(upstream, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-            "x-request-id": callId,
-            origin: "https://muse.ai",
-            referer: upstream,
-          },
-          body: JSON.stringify(payload),
-        });
-        const text = await r.text();
-        try {
-          const j = JSON.parse(text);
-          const d = j && j.data ? j.data : j;
-          const countries = Array.isArray(d.countries)
-            ? d.countries.map((c) => ({
-                code: String((c && c.code) || ""),
-                visitors: Number(c && c.visitors) || 0,
-              }))
-            : [];
-          return new Response(
-            JSON.stringify({
-              visitors: Number(d.visitors) || 0,
-              visits: Number(d.visits) || 0,
-              countries: countries,
-            }),
-            {
-              status: 200,
-              headers: { "content-type": "application/json" },
-            }
-          );
-        } catch (e) {
-          return new Response(text, {
-            status: r.status,
-            headers: { "content-type": "application/json" },
-          });
-        }
-      } catch (e) {
-        return new Response(JSON.stringify({ error: "counter unreachable" }), {
-          status: 502,
+      const json = (obj) =>
+        new Response(JSON.stringify(obj), {
+          status: 200,
           headers: { "content-type": "application/json" },
         });
+      const db = env.VISITORS_DB;
+      if (!db) return json({ visitors: 0, visits: 0, countries: [] });
+
+      try {
+        await db
+          .prepare(
+            "CREATE TABLE IF NOT EXISTS visitor_marks (" +
+              "visitor_key TEXT PRIMARY KEY, " +
+              "country TEXT, " +
+              "visits INTEGER NOT NULL DEFAULT 0, " +
+              "last_seen TEXT)"
+          )
+          .run();
+
+        if (url.pathname === "/api/visit") {
+          let visitorKey = "";
+          try {
+            const body = await request.json();
+            visitorKey = String((body && body.visitorKey) || "");
+          } catch (e) {
+            visitorKey = "";
+          }
+          if (visitorKey) {
+            let country = null;
+            const cfCountry =
+              request.cf && request.cf.country
+                ? String(request.cf.country)
+                : "";
+            if (
+              /^[A-Za-z]{2}$/.test(cfCountry) &&
+              cfCountry.toUpperCase() !== "XX"
+            ) {
+              country = cfCountry.toUpperCase();
+            }
+            await db
+              .prepare(
+                "INSERT INTO visitor_marks (visitor_key, country, visits, last_seen) " +
+                  "VALUES (?1, ?2, 1, datetime('now')) " +
+                  "ON CONFLICT(visitor_key) DO UPDATE SET " +
+                  "visits = visits + 1, " +
+                  "last_seen = datetime('now'), " +
+                  "country = COALESCE(excluded.country, visitor_marks.country)"
+              )
+              .bind(visitorKey, country)
+              .run();
+          }
+        }
+
+        const totals = await db
+          .prepare(
+            "SELECT COUNT(*) AS visitors, COALESCE(SUM(visits), 0) AS visits FROM visitor_marks"
+          )
+          .first();
+        const byCountry = await db
+          .prepare(
+            "SELECT country AS code, COUNT(*) AS visitors FROM visitor_marks " +
+              "WHERE country IS NOT NULL GROUP BY country ORDER BY visitors DESC"
+          )
+          .all();
+        return json({
+          visitors: Number(totals && totals.visitors) || 0,
+          visits: Number(totals && totals.visits) || 0,
+          countries: ((byCountry && byCountry.results) || []).map((r) => ({
+            code: String(r.code || ""),
+            visitors: Number(r.visitors) || 0,
+          })),
+        });
+      } catch (e) {
+        return json({ visitors: 0, visits: 0, countries: [] });
       }
     }
 

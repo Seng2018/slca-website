@@ -6,3 +6,7 @@ compatibility_date = "2024-11-06"
 directory = "."
 binding = "ASSETS"
 run_worker_first = true
+
+[[d1_databases]]
+binding = "VISITORS_DB"
+database_name = "slca-visitors"
