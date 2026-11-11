@@ -43,15 +43,24 @@ export default {
           args.country = cfCountry.toUpperCase();
         }
       }
+      // Speak to the register in the exact envelope the public page itself
+      // uses: an x-request-id header and an actionCallId in the body —
+      // calls without them are not recognised as action calls upstream.
+      const callId =
+        "pub-" +
+        Date.now().toString(36) +
+        "-" +
+        Math.random().toString(36).slice(2, 8);
       const payload = isMark
-        ? { action: "markvisit", args: args }
-        : { action: "getvisitorcount", args: {} };
+        ? { action: "markvisit", args: args, actionCallId: callId }
+        : { action: "getvisitorcount", args: {}, actionCallId: callId };
 
       try {
         const r = await fetch(upstream, {
           method: "POST",
           headers: {
             "content-type": "application/json",
+            "x-request-id": callId,
             origin: "https://muse.ai",
             referer: upstream,
           },
