@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="color-scheme" content="light dark" />
 <meta name="description" content="ສູນປະກັນຊີວິດໄວຮຽນ — Student Life Cycle Assurance: a plan for a member society carrying a child through the education years, in five age packages from birth to age 30. Education funded, work supported after graduation." />
-<link rel="icon" href="data:," />
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
 <title>ສູນປະກັນຊີວິດໄວຮຽນ — Student Life Cycle Assurance</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -77,8 +81,8 @@ section p{font-size:1.19rem}
    desktop and phone alike; it is the same single switcher, styling and
    applyUI wiring unchanged. Scroll-margin below follows the tightened
    header height (216px → 178px). */
-.tabnav{order:3; flex:1 1 100%; margin-left:0; display:flex; gap:2px 3px; flex-wrap:wrap; align-items:center; justify-content:flex-start}
-.tabbtn{background:transparent; border:0; color:#f3efe2; font:inherit; font-size:.74rem; font-weight:700; padding:5px 7px; border-radius:8px; cursor:pointer; display:inline-flex; gap:7px; align-items:center; text-decoration:none; white-space:nowrap}
+.tabnav{order:3; flex:1 1 100%; margin-left:0; display:flex; gap:3px 5px; flex-wrap:wrap; align-items:center; justify-content:flex-start}
+.tabbtn{background:transparent; border:0; color:#f3efe2; font:inherit; font-size:.9rem; font-weight:700; padding:7px 10px; border-radius:8px; cursor:pointer; display:inline-flex; gap:7px; align-items:center; text-decoration:none; white-space:nowrap}
 .tabbtn:hover{background:rgba(255,255,255,.12); color:#ffffff}
 /* desktop: the links of each row grow evenly, so a wrapped second row spans
    the same full width as the first — two balanced rows, no orphan row */
@@ -90,21 +94,63 @@ section p{font-size:1.19rem}
 .tabbtn.direct.active{color:#ffffff; background:rgba(255,255,255,.14); box-shadow:inset 0 -3px 0 var(--gold)}
 .menubtn{display:none; background:transparent; color:#f3efe2; border:1px solid rgba(255,255,255,.4); font:inherit; font-size:.88rem; font-weight:700; padding:7px 13px; border-radius:999px; cursor:pointer; align-items:center; gap:8px}
 .menubtn:hover{background:rgba(255,255,255,.12)}
-/* scroll offset follows the header height: brand row (logo 72px) + the tightened in-line menu rows */
-section[id]{scroll-margin-top:178px}
+/* scroll offset follows the header height: brand row (logo 72px) + the in-line menu rows.
+   MENU LETTERS +2 (Founder, 11 Nov 2026): the link font rises two steps,
+   .74rem → .9rem, padding 5px 7px → 7px 10px, gaps 2px 3px → 3px 5px; the
+   phone menu list takes the same .9rem (set explicitly in its rule below).
+   The bigger letters may wrap the line to an extra row — accepted by the
+   Founder — so the desktop scroll-margin rises to cover a third row. */
+section[id]{scroll-margin-top:224px}
 @media (max-width:900px){
-  section[id]{scroll-margin-top:128px}
-  .menubtn{display:inline-flex; margin-left:auto}
-  .adminbtn{margin-left:8px}
+  /* phone scroll offset (Founder fix, 11 Nov 2026): the old 128px sat BELOW
+     the real phone header (≈199px tall with the visitor pill wrapped onto
+     its own third row), so tapped sections hid under the sticky header.
+     With the pill back on the switcher's row the header stands ≈140px
+     tall; the offset follows the desktop pattern — header height plus
+     the same ≈36px breathing room the desktop 224px keeps over its
+     ≈188px header — landing at 176px. */
+  section[id]{scroll-margin-top:176px}
+  /* phone header cluster (Founder fix, 11 Nov 2026): the visitor pill must
+     stay on the SAME row as the ລາວ / EN / FR switcher, at the right side —
+     never wrapped onto its own row at the left. The whole right-side row
+     (menu, Admin, switcher, pill) is tightened to fit one line: narrower
+     wrap padding, 6px gaps in place of the 8px side margins, and smaller
+     padding/font on each item — the pill itself shrinks most (font
+     .85rem → .78rem, padding 6px 12px → 5px 8px, eye mark 17px → 14px).
+     The menu button's margin-left:auto absorbs any slack, so the row —
+     pill corner-most — ends flush at the right edge. */
+  .topbar .wrap{gap:8px 6px; padding-left:12px; padding-right:12px}
+  .menubtn{display:inline-flex; margin-left:auto; padding:6px 9px; font-size:.8rem; gap:6px}
+  .menubtn svg{width:16px; height:16px}
+  /* the Admin / switcher / pill tightening lives in a second ≤900px block
+     at the END of this stylesheet: their base rules (.adminbtn, .langbar,
+     .visitorpill) are written after this block, so overrides placed here
+     would lose the cascade at equal specificity and never apply. */
   .tabnav{display:none}
   .tabnav.open{display:block; position:absolute; top:100%; left:0; right:0; margin-left:0; background:var(--green-950); border-bottom:3px solid var(--gold); padding:10px 14px 14px; max-height:calc(100vh - 120px); overflow-y:auto; box-shadow:0 18px 30px rgba(0,0,0,.35); z-index:65}
   /* phone menu alignment: the same links as an aligned list — every row full
-     width, starting on the same left edge (the links' 10px left padding). */
-  .tabnav .tabbtn{display:flex; width:100%; justify-content:flex-start; padding:11px 10px; white-space:normal; text-align:left}
+     width, starting on the same left edge (the links' 10px left padding).
+     Same +2 letter size as the desktop line (.9rem, Founder, 11 Nov 2026). */
+  .tabnav .tabbtn{display:flex; width:100%; justify-content:flex-start; padding:12px 10px; font-size:.9rem; white-space:normal; text-align:left}
+}
+/* phone widths up to 700px: the brand takes its own full row, so the
+   menu / Admin / switcher / visitor-pill row below it is never squeezed
+   by the brand and the pill can never be pushed off the switcher's row */
+@media (max-width:700px){
+  .topbar .brand{flex:1 1 100%}
 }
 .langbar{display:flex; border:1px solid rgba(255,255,255,.4); border-radius:999px; overflow:hidden; margin-left:8px; order:2}
 .langbar button{background:transparent; color:#f3efe2; border:0; padding:7px 13px; font:inherit; font-size:.88rem; font-weight:700; cursor:pointer}
 .langbar button[aria-pressed="true"]{background:var(--gold); color:#231a02}
+/* visitor counter pill (Founder, 11 Nov 2026): sits in the header's right-side
+   corner cluster, after the language switcher (same flex order, later in the
+   DOM, so it stands corner-most). The number comes from the actions endpoint
+   (markvisit / getvisitorcount); until a number arrives — or if the call
+   fails — the pill shows just its label, and it never blocks the page. */
+.visitorpill{display:inline-flex; align-items:center; gap:7px; border:1px solid rgba(255,255,255,.4); border-radius:999px; padding:6px 12px; margin-left:8px; order:2; color:#f3efe2; font-size:.85rem; font-weight:700; white-space:nowrap}
+.visitorpill svg{flex:none; opacity:.9}
+.visitorpill b{font-variant-numeric:tabular-nums; color:var(--gold-soft)}
+html[lang="lo"] .visitorpill{font-family:"Phetsarath OT","Phetsarath","Noto Sans Lao",sans-serif}
 /* under-construction notice — a gold pill button at the bottom of the page, in the footer */
 .construction{background:transparent; text-align:center; padding:26px 0 8px; position:relative}
 .construction .uc-in{display:inline-flex; align-items:center; justify-content:center; gap:8px 10px; flex-wrap:wrap; max-width:1120px; margin:0 auto; background:var(--gold); color:#231a02; border:2px solid #231a02; border-radius:999px; padding:10px 24px 12px; box-shadow:0 6px 16px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.5); position:relative; overflow:hidden}
@@ -382,6 +428,32 @@ html[lang="lo"] .topbar .brand b, html[lang="lo"] .hero .brandlo, html[lang="lo"
 /* header tabs: Lao labels take the same Phetsarath OT stack in Lao mode */
 html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
 {font-family:"Phetsarath OT","Phetsarath","Noto Sans Lao",sans-serif}
+/* phone header cluster, part 2 (Founder fix, 11 Nov 2026) — placed at the
+   END of the stylesheet on purpose: the .adminbtn, .langbar and
+   .visitorpill base rules sit after the first ≤900px block, so these
+   overrides must come after them to win at equal specificity. Together
+   with the tightened wrap/menu rules in that first block, the whole
+   right-side row (menu, Admin, ລາວ / EN / FR switcher, visitor pill)
+   fits on ONE line at phone width, the pill corner-most at the right:
+   the 8px side margins go (the wrap's 6px gaps take over), Admin drops
+   to .8rem with 5px 9px padding, the switcher buttons to .8rem with
+   6px 8px padding, and the pill shrinks most — font .85rem → .78rem,
+   padding 6px 12px → 5px 8px, gap 7px → 5px, eye mark 17px → 14px. */
+@media (max-width:900px){
+  .adminbtn{margin-left:0; padding:5px 9px; font-size:.8rem}
+  .langbar{margin-left:0}
+  .langbar button{padding:6px 8px; font-size:.8rem}
+  .visitorpill{margin-left:0; padding:5px 8px; font-size:.78rem; gap:5px}
+  .visitorpill svg{width:14px; height:14px}
+}
+/* narrow phones: one more tightening step so the same single row holds */
+@media (max-width:400px){
+  .menubtn{padding:6px 7px; font-size:.76rem}
+  .adminbtn{padding:5px 7px; font-size:.76rem}
+  .langbar button{padding:6px 6px; font-size:.76rem}
+  .visitorpill{padding:5px 7px; font-size:.74rem; gap:4px}
+  .visitorpill svg{width:13px; height:13px}
+}
 </style>
 </head>
 <body>
@@ -423,6 +495,11 @@ html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
       <button type="button" data-lang="lo" aria-pressed="true">ລາວ</button>
       <button type="button" data-lang="en" aria-pressed="false">EN</button>
       <button type="button" data-lang="fr" aria-pressed="false">FR</button>
+    </span>
+    <span class="visitorpill" id="visitorPill">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span data-i18n="visitors_label">ຜູ້ເຂົ້າຊົມ</span>
+      <b id="visitorCount" hidden></b>
     </span>
     <button type="button" class="adminbtn" id="adminOpen">Admin</button>
   </div>
@@ -1185,6 +1262,9 @@ html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
       <div id="regList"></div>
       <button type="button" class="abtn" id="regCsv"></button>
       <p class="small" id="regNote" style="margin-top:10px"></p>
+      <h3 id="visH"></h3>
+      <p class="small" id="visTotals" style="margin:0 0 4px"></p>
+      <a class="abtn" id="visTrackBtn" href="https://dash.cloudflare.com/?to=/:account/web-analytics" target="_blank" rel="noopener" style="display:block; text-align:center; text-decoration:none"></a>
       <h3 id="editH"></h3>
       <button type="button" class="abtn" id="editToggle" aria-pressed="false"></button>
       <p class="small" id="adminNote" style="margin-top:16px"></p>
@@ -1742,6 +1822,11 @@ Object.assign(DATA.fr.ui,{
 Object.assign(DATA.lo.ui,{
  navtab_project:"ໂຄງການ",navtab_membership:"ສະມາຊິກ",navtab_community:"ຊຸມຊົນ ແລະ ການສະໜັບສະໜູນ",navtab_laos:"ປະເທດລາວ",navtab_menu:"ເມນູ"});
 
+/* ---------- visitor counter (Founder, 11 Nov 2026): header pill label ---------- */
+Object.assign(DATA.en.ui,{ visitors_label:"Visitors"});
+Object.assign(DATA.fr.ui,{ visitors_label:"Visiteurs"});
+Object.assign(DATA.lo.ui,{ visitors_label:"ຜູ້ເຂົ້າຊົມ"});
+
 /* ---------- Build B strings: pilot studies, work with us, job board ---------- */
 Object.assign(DATA.en.ui,{
  pilot_note:"You can now submit right here on this page: fill in the form below and your proposal is saved in the project database, and you can upload your project as a PDF file in the upload tab. Your proposal and contact details are recorded privately and never displayed publicly.",
@@ -2176,6 +2261,56 @@ function refreshRegisterTotal(){
     if(d&&typeof d.count==="number"){ registerTotal=d; renderRegister(); }
   },function(){});
 }
+/* Website visitors (Founder, 11 Nov 2026) — totals read from the same actions
+   endpoint via getvisitorcount, refreshed each time the admin panel opens.
+   The header pill below shares the last totals read. Countries and referring
+   sites are seen in Cloudflare Web Analytics, opened by the panel's button. */
+var visitorTotals=null, visitorTotalsFailed=false;
+function showVisitorPill(n){
+  var el=document.getElementById("visitorCount");
+  if(el&&typeof n==="number"&&isFinite(n)){ el.textContent=fmt(n); el.hidden=false; }
+}
+function renderVisitorTotals(){
+  var el=document.getElementById("visTotals"); if(!el) return;
+  var a=A();
+  if(visitorTotals){ el.textContent=a.visvisitors+": "+fmt(visitorTotals.visitors)+" · "+a.visvisits+": "+fmt(visitorTotals.visits); }
+  else if(visitorTotalsFailed){ el.textContent=a.visunavailable; }
+  else { el.textContent=a.visloading; }
+}
+function refreshVisitorTotals(){
+  callRegisterAction("getvisitorcount",{}).then(function(d){
+    if(d&&typeof d.visitors==="number"&&typeof d.visits==="number"){
+      visitorTotals=d; visitorTotalsFailed=false;
+      showVisitorPill(d.visitors);
+    } else { visitorTotalsFailed=true; }
+    renderVisitorTotals();
+  },function(){ visitorTotalsFailed=true; renderVisitorTotals(); });
+}
+/* Header visitor pill: the page keeps a random visitor key in localStorage
+   (no personal data), calls markvisit at most once per browser session
+   (sessionStorage flag) and shows the returned visitors number. Any failure
+   quietly falls back to getvisitorcount, and then to the label alone — the
+   pill never breaks or blocks the page. */
+(function(){
+  function fallback(){ refreshVisitorTotals(); }
+  try{
+    var key=null, marked=false;
+    try{
+      key=localStorage.getItem("slca_visitor_key");
+      if(!key){ key="v-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,14); localStorage.setItem("slca_visitor_key",key); }
+    }catch(e){ key=null; }
+    try{ marked=sessionStorage.getItem("slca_visit_marked")==="1"; }catch(e){ marked=false; }
+    if(key&&!marked){
+      callRegisterAction("markvisit",{visitorKey:key}).then(function(d){
+        try{ sessionStorage.setItem("slca_visit_marked","1"); }catch(e){}
+        if(d&&typeof d.visitors==="number"){
+          showVisitorPill(d.visitors);
+          if(typeof d.visits==="number"){ visitorTotals=d; visitorTotalsFailed=false; renderVisitorTotals(); }
+        } else { fallback(); }
+      },function(){ fallback(); });
+    } else { fallback(); }
+  }catch(e){ /* the pill simply keeps its label */ }
+})();
 document.getElementById("dlBtn").addEventListener("click",function(){
   var blob=new Blob([lastSummary],{type:"text/plain;charset=utf-8"});
   var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="slca-interest-registration.txt"; a.click();
@@ -2187,9 +2322,9 @@ document.getElementById("cpBtn").addEventListener("click",function(){
 
 /* ---------- founder admin dashboard (this visit only — nothing is sent or stored) ---------- */
 var ADM={
-lo:{title:"ແຜງຄວບຄຸມຂອງຜູ້ກໍ່ຕັ້ງ",sech:"ພາກສ່ວນຂອງໜ້າ — ສະແດງ ຫຼື ເຊື່ອງ",shown:"ສະແດງຢູ່",hiddenL:"ເຊື່ອງໄວ້",edith:"ແກ້ໄຂຂໍ້ຄວາມ",editBtn:"ເປີດການແກ້ໄຂຂໍ້ຄວາມໃນໜ້າ",note:"ແຜງນີ້ແມ່ນເຄື່ອງມືເບິ່ງໜ້າເວັບເທົ່ານັ້ນ: ໃຜກໍເປີດໄດ້, ແລະ ມັນປ່ຽນສະເພາະສິ່ງທີ່ທ່ານເຫັນໃນໜ້າຈໍຂອງທ່ານເອງໃນຮອບເປີດນີ້ — ບໍ່ໄດ້ປ່ຽນໜ້າເວັບທີ່ຜູ້ອື່ນເຫັນ, ແລະ ການປ່ຽນແປງຈະລ້າງອອກເມື່ອໂຫຼດໜ້າໃໝ່. ດາວໂຫຼດໄຟລ໌ການຕັ້ງຄ່າເພື່ອເກັບບັນທຶກການປ່ຽນແປງໄວ້, ຫຼື ສົ່ງມັນກັບມາ ແລ້ວການປ່ຽນແປງຈະຖືກຝັງເຂົ້າໃນໜ້າຢ່າງຖາວອນ. ການແກ້ໄຂທີ່ບັນທຶກດ້ວຍຕົນເອງ ແລະ ເຫັນກົງກັນສຳລັບທຸກຄົນ ຈະມາພ້ອມເວັບໄຊເຕັມຮູບແບບທີ່ມີການເຂົ້າສູ່ລະບົບຂອງຜູ້ກໍ່ຕັ້ງ.",download:"ດາວໂຫຼດໄຟລ໌ການຕັ້ງຄ່າ (.json)",reset:"ເລີ່ມໃໝ່ທັງໝົດ (ໂຫຼດໜ້າໃໝ່)",exit:"ອອກຈາກແຜງຄວບຄຸມ",regh:"ບັນຊີລົງທະບຽນ — ການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້",regtotal:"ຈຳນວນທັງໝົດໃນບັນຊີລົງທະບຽນຂອງໂຄງການ",regloading:"ກຳລັງອ່ານຈຳນວນຈາກບັນຊີລົງທະບຽນຂອງໂຄງການ…",regempty:"ຍັງບໍ່ມີການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້ໃນຮອບເປີດນີ້. ບັນຊີລົງທະບຽນເຕັມຮູບແບບ — ທຸກຊື່, ຄົ້ນຫາ ແລະ ສົ່ງອອກໄດ້ — ຢູ່ໃນເວັບໄຊເຕັມຮູບແບບ.",regcsv:"ດາວໂຫຼດການລົງທະບຽນທີ່ບັນທຶກໃນຮອບນີ້ (.csv)",regnote:"ຈຳນວນຂ້າງເທິງອ່ານສົດຈາກບັນຊີລົງທະບຽນດຽວກັນກັບທີ່ເວັບໄຊເຕັມຮູບແບບໃຊ້. ລາຍການສະແດງການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້ໃນຮອບເປີດນີ້, ພ້ອມລະຫັດແນະນຳທີ່ແຕ່ລະຄົນໄດ້ຮັບ.",regsearch:"ຄົ້ນຫາ ຊື່, ເບີຕິດຕໍ່, ແຂວງ ຫຼື ລະຫັດ",gatePrompt:"ກະລຸນາໃສ່ລະຫັດເຂົ້າໃຊ້ Admin",gateWrong:"ລະຫັດບໍ່ຖືກຕ້ອງ",gateConfirm:"ຢືນຢັນ",gateCancel:"ຍົກເລີກ"},
-en:{title:"Founder admin dashboard",sech:"Page sections — show or hide",shown:"Shown",hiddenL:"Hidden",edith:"Edit the wording",editBtn:"Turn on text editing on the page",note:"This panel is a viewing tool only: anyone can open it, and it changes only what you see on your own screen in this visit — it does not change the page other visitors see, and the changes clear when the page is reloaded. Download the settings file to keep a record of them, or send it back and the changes can be built into the page permanently. Editing that saves by itself, and applies for everyone, arrives with the full hosted website and its founder sign-in.",download:"Download settings file (.json)",reset:"Reset everything (reload page)",exit:"Leave admin mode",regh:"People Register — registrations saved from this page",regtotal:"Total in the project register",regloading:"Reading the project register total…",regempty:"No registration has been saved from this page in this visit yet. The full register — every name, with search and export — is kept on the full website.",regcsv:"Download this visit's saved registrations (.csv)",regnote:"The total above is read live from the same project register the full website uses. The list shows the registrations saved from this page during this visit, with the referral code each person was issued.",regsearch:"Search name, contact, province or code",gatePrompt:"Please enter the Admin access code",gateWrong:"Wrong code.",gateConfirm:"Confirm",gateCancel:"Cancel"},
-fr:{title:"Tableau de bord du Fondateur",sech:"Sections de la page — afficher ou masquer",shown:"Affichée",hiddenL:"Masquée",edith:"Modifier les textes",editBtn:"Activer la modification des textes sur la page",note:"Ce panneau est un simple outil d'affichage : tout le monde peut l'ouvrir, et il ne modifie que ce que vous voyez sur votre propre écran pendant cette visite — il ne change pas la page que voient les autres visiteurs, et les modifications disparaissent au rechargement. Téléchargez le fichier de réglages pour en garder une trace, ou renvoyez-le pour que les modifications soient intégrées durablement à la page. La modification avec enregistrement automatique, valable pour tous, viendra avec le site hébergé complet et sa connexion du Fondateur.",download:"Télécharger le fichier de réglages (.json)",reset:"Tout réinitialiser (recharger la page)",exit:"Quitter le mode administrateur",regh:"Registre des personnes — inscriptions enregistrées depuis cette page",regtotal:"Total dans le registre du projet",regloading:"Lecture du total du registre du projet…",regempty:"Aucune inscription n'a encore été enregistrée depuis cette page pendant cette visite. Le registre complet — chaque nom, avec recherche et export — est conservé sur le site complet.",regcsv:"Télécharger les inscriptions enregistrées pendant cette visite (.csv)",regnote:"Le total ci-dessus est lu en direct dans le même registre du projet que celui du site complet. La liste montre les inscriptions enregistrées depuis cette page pendant cette visite, avec le code de parrainage remis à chacune.",regsearch:"Rechercher un nom, un contact, une province ou un code",gatePrompt:"Veuillez saisir le code d'accès Admin",gateWrong:"Code incorrect.",gateConfirm:"Confirmer",gateCancel:"Annuler"}
+lo:{title:"ແຜງຄວບຄຸມຂອງຜູ້ກໍ່ຕັ້ງ",sech:"ພາກສ່ວນຂອງໜ້າ — ສະແດງ ຫຼື ເຊື່ອງ",shown:"ສະແດງຢູ່",hiddenL:"ເຊື່ອງໄວ້",edith:"ແກ້ໄຂຂໍ້ຄວາມ",editBtn:"ເປີດການແກ້ໄຂຂໍ້ຄວາມໃນໜ້າ",note:"ແຜງນີ້ແມ່ນເຄື່ອງມືເບິ່ງໜ້າເວັບເທົ່ານັ້ນ: ໃຜກໍເປີດໄດ້, ແລະ ມັນປ່ຽນສະເພາະສິ່ງທີ່ທ່ານເຫັນໃນໜ້າຈໍຂອງທ່ານເອງໃນຮອບເປີດນີ້ — ບໍ່ໄດ້ປ່ຽນໜ້າເວັບທີ່ຜູ້ອື່ນເຫັນ, ແລະ ການປ່ຽນແປງຈະລ້າງອອກເມື່ອໂຫຼດໜ້າໃໝ່. ດາວໂຫຼດໄຟລ໌ການຕັ້ງຄ່າເພື່ອເກັບບັນທຶກການປ່ຽນແປງໄວ້, ຫຼື ສົ່ງມັນກັບມາ ແລ້ວການປ່ຽນແປງຈະຖືກຝັງເຂົ້າໃນໜ້າຢ່າງຖາວອນ. ການແກ້ໄຂທີ່ບັນທຶກດ້ວຍຕົນເອງ ແລະ ເຫັນກົງກັນສຳລັບທຸກຄົນ ຈະມາພ້ອມເວັບໄຊເຕັມຮູບແບບທີ່ມີການເຂົ້າສູ່ລະບົບຂອງຜູ້ກໍ່ຕັ້ງ.",download:"ດາວໂຫຼດໄຟລ໌ການຕັ້ງຄ່າ (.json)",reset:"ເລີ່ມໃໝ່ທັງໝົດ (ໂຫຼດໜ້າໃໝ່)",exit:"ອອກຈາກແຜງຄວບຄຸມ",regh:"ບັນຊີລົງທະບຽນ — ການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້",regtotal:"ຈຳນວນທັງໝົດໃນບັນຊີລົງທະບຽນຂອງໂຄງການ",regloading:"ກຳລັງອ່ານຈຳນວນຈາກບັນຊີລົງທະບຽນຂອງໂຄງການ…",regempty:"ຍັງບໍ່ມີການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້ໃນຮອບເປີດນີ້. ບັນຊີລົງທະບຽນເຕັມຮູບແບບ — ທຸກຊື່, ຄົ້ນຫາ ແລະ ສົ່ງອອກໄດ້ — ຢູ່ໃນເວັບໄຊເຕັມຮູບແບບ.",regcsv:"ດາວໂຫຼດການລົງທະບຽນທີ່ບັນທຶກໃນຮອບນີ້ (.csv)",regnote:"ຈຳນວນຂ້າງເທິງອ່ານສົດຈາກບັນຊີລົງທະບຽນດຽວກັນກັບທີ່ເວັບໄຊເຕັມຮູບແບບໃຊ້. ລາຍການສະແດງການລົງທະບຽນທີ່ບັນທຶກຈາກໜ້ານີ້ໃນຮອບເປີດນີ້, ພ້ອມລະຫັດແນະນຳທີ່ແຕ່ລະຄົນໄດ້ຮັບ.",regsearch:"ຄົ້ນຫາ ຊື່, ເບີຕິດຕໍ່, ແຂວງ ຫຼື ລະຫັດ",gatePrompt:"ກະລຸນາໃສ່ລະຫັດເຂົ້າໃຊ້ Admin",gateWrong:"ລະຫັດບໍ່ຖືກຕ້ອງ",gateConfirm:"ຢືນຢັນ",gateCancel:"ຍົກເລີກ",vish:"ຜູ້ເຂົ້າຊົມເວັບໄຊ",visbtn:"ເປີດການເບິ່ງຕິດຕາມຜູ້ເຂົ້າຊົມ",visloading:"ກຳລັງອ່ານຕົວເລກຜູ້ເຂົ້າຊົມ…",visvisitors:"ຜູ້ເຂົ້າຊົມ",visvisits:"ການເຂົ້າຊົມ",visunavailable:"ຍັງອ່ານຕົວເລກບໍ່ໄດ້ໃນຕອນນີ້"},
+en:{title:"Founder admin dashboard",sech:"Page sections — show or hide",shown:"Shown",hiddenL:"Hidden",edith:"Edit the wording",editBtn:"Turn on text editing on the page",note:"This panel is a viewing tool only: anyone can open it, and it changes only what you see on your own screen in this visit — it does not change the page other visitors see, and the changes clear when the page is reloaded. Download the settings file to keep a record of them, or send it back and the changes can be built into the page permanently. Editing that saves by itself, and applies for everyone, arrives with the full hosted website and its founder sign-in.",download:"Download settings file (.json)",reset:"Reset everything (reload page)",exit:"Leave admin mode",regh:"People Register — registrations saved from this page",regtotal:"Total in the project register",regloading:"Reading the project register total…",regempty:"No registration has been saved from this page in this visit yet. The full register — every name, with search and export — is kept on the full website.",regcsv:"Download this visit's saved registrations (.csv)",regnote:"The total above is read live from the same project register the full website uses. The list shows the registrations saved from this page during this visit, with the referral code each person was issued.",regsearch:"Search name, contact, province or code",gatePrompt:"Please enter the Admin access code",gateWrong:"Wrong code.",gateConfirm:"Confirm",gateCancel:"Cancel",vish:"Website visitors",visbtn:"Open visitor tracking",visloading:"Reading the visitor totals…",visvisitors:"Visitors",visvisits:"Visits",visunavailable:"The totals could not be read just now"},
+fr:{title:"Tableau de bord du Fondateur",sech:"Sections de la page — afficher ou masquer",shown:"Affichée",hiddenL:"Masquée",edith:"Modifier les textes",editBtn:"Activer la modification des textes sur la page",note:"Ce panneau est un simple outil d'affichage : tout le monde peut l'ouvrir, et il ne modifie que ce que vous voyez sur votre propre écran pendant cette visite — il ne change pas la page que voient les autres visiteurs, et les modifications disparaissent au rechargement. Téléchargez le fichier de réglages pour en garder une trace, ou renvoyez-le pour que les modifications soient intégrées durablement à la page. La modification avec enregistrement automatique, valable pour tous, viendra avec le site hébergé complet et sa connexion du Fondateur.",download:"Télécharger le fichier de réglages (.json)",reset:"Tout réinitialiser (recharger la page)",exit:"Quitter le mode administrateur",regh:"Registre des personnes — inscriptions enregistrées depuis cette page",regtotal:"Total dans le registre du projet",regloading:"Lecture du total du registre du projet…",regempty:"Aucune inscription n'a encore été enregistrée depuis cette page pendant cette visite. Le registre complet — chaque nom, avec recherche et export — est conservé sur le site complet.",regcsv:"Télécharger les inscriptions enregistrées pendant cette visite (.csv)",regnote:"Le total ci-dessus est lu en direct dans le même registre du projet que celui du site complet. La liste montre les inscriptions enregistrées depuis cette page pendant cette visite, avec le code de parrainage remis à chacune.",regsearch:"Rechercher un nom, un contact, une province ou un code",gatePrompt:"Veuillez saisir le code d'accès Admin",gateWrong:"Code incorrect.",gateConfirm:"Confirmer",gateCancel:"Annuler",vish:"Visiteurs du site",visbtn:"Ouvrir le suivi des visiteurs",visloading:"Lecture des totaux de visiteurs…",visvisitors:"Visiteurs",visvisits:"Visites",visunavailable:"Les totaux n'ont pas pu être lus pour le moment"}
 };
 var SECTIONS=[
  {id:"story",lo:"ເລື່ອງເລົ່າຂອງພໍ່ແມ່",en:"The Parents' Story",fr:"Le récit des parents"},
@@ -2242,6 +2377,9 @@ function updateAdminLabels(){
   document.getElementById("regCsv").textContent=a.regcsv;
   document.getElementById("regNote").textContent=a.regnote;
   document.getElementById("regSearch").setAttribute("placeholder",a.regsearch);
+  document.getElementById("visH").textContent=a.vish;
+  document.getElementById("visTrackBtn").textContent=a.visbtn;
+  renderVisitorTotals();
   buildAdminSections();
   renderRegister();
 }
@@ -2272,7 +2410,7 @@ function showAdminGate(){
   adminGateInput.focus();
 }
 function hideAdminGate(){ adminGate.hidden=true; }
-function openAdminPanel(){ adminWrap.hidden=false; updateAdminLabels(); refreshRegisterTotal(); }
+function openAdminPanel(){ adminWrap.hidden=false; updateAdminLabels(); refreshRegisterTotal(); refreshVisitorTotals(); }
 function openAdmin(){ if(adminUnlocked){ openAdminPanel(); } else { showAdminGate(); } }
 function closeAdmin(){ adminWrap.hidden=true; }
 document.getElementById("adminGateForm").addEventListener("submit",function(e){
