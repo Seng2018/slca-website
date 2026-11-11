@@ -74,14 +74,16 @@ section p{font-size:1.19rem}
    the full set stands on TWO BALANCED rows (verified in the rendered
    capture at 1440px: 2 rows, no orphan row); on desktop each row's links
    grow evenly (flex:1 1 auto, text centred) so both rows span the same
-   full width on the same left edge. The THREE-LANGUAGE selector now sits
-   at the RIGHT-SIDE CORNER of the top header (Founder, same follow-up):
-   the Admin button takes margin-left:auto and the switcher follows it as
-   the last, corner-most item of the brand row (flex order 1 / 2), on
-   desktop and phone alike; it is the same single switcher, styling and
-   applyUI wiring unchanged. Scroll-margin below follows the tightened
-   header height (216px → 178px). */
-.tabnav{order:3; flex:1 1 100%; margin-left:0; display:flex; gap:3px 5px; flex-wrap:wrap; align-items:center; justify-content:flex-start}
+   full width on the same left edge. The THREE-LANGUAGE selector sits in
+   the right-side cluster of the top header (Founder, same follow-up):
+   the Admin button takes margin-left:auto (flex order 1) and the switcher
+   follows it (order 2), on desktop and phone alike; it is the same single
+   switcher, styling and applyUI wiring unchanged. (The visitor counter
+   stood after both in the header earlier on 11 Nov 2026; the Founder then
+   moved it to the footer, beside the Contact email — see the .visitorbtn
+   rule.) Scroll-margin below follows the tightened header height
+   (216px → 178px). */
+.tabnav{order:4; flex:1 1 100%; margin-left:0; display:flex; gap:3px 5px; flex-wrap:wrap; align-items:center; justify-content:flex-start}
 .tabbtn{background:transparent; border:0; color:#f3efe2; font:inherit; font-size:.9rem; font-weight:700; padding:7px 10px; border-radius:8px; cursor:pointer; display:inline-flex; gap:7px; align-items:center; text-decoration:none; white-space:nowrap}
 .tabbtn:hover{background:rgba(255,255,255,.12); color:#ffffff}
 /* desktop: the links of each row grow evenly, so a wrapped second row spans
@@ -103,29 +105,23 @@ section p{font-size:1.19rem}
 section[id]{scroll-margin-top:224px}
 @media (max-width:900px){
   /* phone scroll offset (Founder fix, 11 Nov 2026): the old 128px sat BELOW
-     the real phone header (≈199px tall with the visitor pill wrapped onto
-     its own third row), so tapped sections hid under the sticky header.
-     With the pill back on the switcher's row the header stands ≈140px
-     tall; the offset follows the desktop pattern — header height plus
-     the same ≈36px breathing room the desktop 224px keeps over its
-     ≈188px header — landing at 176px. */
+     the real phone header, so tapped sections hid under the sticky header.
+     The header stands ≈140px tall; the offset follows the desktop pattern
+     — header height plus the same ≈36px breathing room the desktop 224px
+     keeps over its ≈188px header — landing at 176px. */
   section[id]{scroll-margin-top:176px}
-  /* phone header cluster (Founder fix, 11 Nov 2026): the visitor pill must
-     stay on the SAME row as the ລາວ / EN / FR switcher, at the right side —
-     never wrapped onto its own row at the left. The whole right-side row
-     (menu, Admin, switcher, pill) is tightened to fit one line: narrower
+  /* phone header cluster (Founder fix, 11 Nov 2026): the whole right-side
+     row (menu, Admin, switcher) is tightened to fit one line: narrower
      wrap padding, 6px gaps in place of the 8px side margins, and smaller
-     padding/font on each item — the pill itself shrinks most (font
-     .85rem → .78rem, padding 6px 12px → 5px 8px, eye mark 17px → 14px).
-     The menu button's margin-left:auto absorbs any slack, so the row —
-     pill corner-most — ends flush at the right edge. */
+     padding/font on each item. The menu button's margin-left:auto absorbs
+     any slack, so the row ends flush at the right edge. */
   .topbar .wrap{gap:8px 6px; padding-left:12px; padding-right:12px}
   .menubtn{display:inline-flex; margin-left:auto; padding:6px 9px; font-size:.8rem; gap:6px}
   .menubtn svg{width:16px; height:16px}
-  /* the Admin / switcher / pill tightening lives in a second ≤900px block
-     at the END of this stylesheet: their base rules (.adminbtn, .langbar,
-     .visitorpill) are written after this block, so overrides placed here
-     would lose the cascade at equal specificity and never apply. */
+  /* the Admin / switcher tightening lives in a second ≤900px block at the
+     END of this stylesheet: their base rules (.adminbtn, .langbar) are
+     written after this block, so overrides placed here would lose the
+     cascade at equal specificity and never apply. */
   .tabnav{display:none}
   .tabnav.open{display:block; position:absolute; top:100%; left:0; right:0; margin-left:0; background:var(--green-950); border-bottom:3px solid var(--gold); padding:10px 14px 14px; max-height:calc(100vh - 120px); overflow-y:auto; box-shadow:0 18px 30px rgba(0,0,0,.35); z-index:65}
   /* phone menu alignment: the same links as an aligned list — every row full
@@ -134,23 +130,24 @@ section[id]{scroll-margin-top:224px}
   .tabnav .tabbtn{display:flex; width:100%; justify-content:flex-start; padding:12px 10px; font-size:.9rem; white-space:normal; text-align:left}
 }
 /* phone widths up to 700px: the brand takes its own full row, so the
-   menu / Admin / switcher / visitor-pill row below it is never squeezed
-   by the brand and the pill can never be pushed off the switcher's row */
+   menu / Admin / switcher row below it is never squeezed by the brand */
 @media (max-width:700px){
   .topbar .brand{flex:1 1 100%}
 }
 .langbar{display:flex; border:1px solid rgba(255,255,255,.4); border-radius:999px; overflow:hidden; margin-left:8px; order:2}
 .langbar button{background:transparent; color:#f3efe2; border:0; padding:7px 13px; font:inherit; font-size:.88rem; font-weight:700; cursor:pointer}
 .langbar button[aria-pressed="true"]{background:var(--gold); color:#231a02}
-/* visitor counter pill (Founder, 11 Nov 2026): sits in the header's right-side
-   corner cluster, after the language switcher (same flex order, later in the
-   DOM, so it stands corner-most). The number comes from the actions endpoint
-   (markvisit / getvisitorcount); until a number arrives — or if the call
-   fails — the pill shows just its label, and it never blocks the page. */
-.visitorpill{display:inline-flex; align-items:center; gap:7px; border:1px solid rgba(255,255,255,.4); border-radius:999px; padding:6px 12px; margin-left:8px; order:2; color:#f3efe2; font-size:.85rem; font-weight:700; white-space:nowrap}
-.visitorpill svg{flex:none; opacity:.9}
-.visitorpill b{font-variant-numeric:tabular-nums; color:var(--gold-soft)}
-html[lang="lo"] .visitorpill{font-family:"Phetsarath OT","Phetsarath","Noto Sans Lao",sans-serif}
+/* visitor counter button (Founder, 11 Nov 2026; moved to the FOOTER the
+   same day): stands in the footer beside the Contact email link, styled as
+   a small gold pill button in the footer's manner. The number comes from
+   the actions endpoint (markvisit / getvisitorcount); until a number
+   arrives — or if the call fails — the button shows just its label, and
+   it never blocks the page. */
+.footcontactrow{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:4px}
+.visitorbtn{display:inline-flex; align-items:center; gap:7px; background:var(--gold); color:#231a02; border:2px solid #231a02; border-radius:999px; padding:5px 12px; font:inherit; font-size:.85rem; font-weight:700; white-space:nowrap; cursor:default; box-shadow:0 3px 8px rgba(0,0,0,.25)}
+.visitorbtn svg{flex:none; opacity:.9}
+.visitorbtn b{font-variant-numeric:tabular-nums}
+html[lang="lo"] .visitorbtn{font-family:"Phetsarath OT","Phetsarath","Noto Sans Lao",sans-serif}
 /* under-construction notice — a gold pill button at the bottom of the page, in the footer */
 .construction{background:transparent; text-align:center; padding:26px 0 8px; position:relative}
 .construction .uc-in{display:inline-flex; align-items:center; justify-content:center; gap:8px 10px; flex-wrap:wrap; max-width:1120px; margin:0 auto; background:var(--gold); color:#231a02; border:2px solid #231a02; border-radius:999px; padding:10px 24px 12px; box-shadow:0 6px 16px rgba(0,0,0,.30), inset 0 1px 0 rgba(255,255,255,.5); position:relative; overflow:hidden}
@@ -429,30 +426,25 @@ html[lang="lo"] .topbar .brand b, html[lang="lo"] .hero .brandlo, html[lang="lo"
 html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
 {font-family:"Phetsarath OT","Phetsarath","Noto Sans Lao",sans-serif}
 /* phone header cluster, part 2 (Founder fix, 11 Nov 2026) — placed at the
-   END of the stylesheet on purpose: the .adminbtn, .langbar and
-   .visitorpill base rules sit after the first ≤900px block, so these
-   overrides must come after them to win at equal specificity. Together
-   with the tightened wrap/menu rules in that first block, the whole
-   right-side row (menu, Admin, ລາວ / EN / FR switcher, visitor pill)
-   fits on ONE line at phone width, the pill corner-most at the right:
-   the 8px side margins go (the wrap's 6px gaps take over), Admin drops
-   to .8rem with 5px 9px padding, the switcher buttons to .8rem with
-   6px 8px padding, and the pill shrinks most — font .85rem → .78rem,
-   padding 6px 12px → 5px 8px, gap 7px → 5px, eye mark 17px → 14px. */
+   END of the stylesheet on purpose: the .adminbtn and .langbar base rules
+   sit after the first ≤900px block, so these overrides must come after
+   them to win at equal specificity. Together with the tightened wrap/menu
+   rules in that first block, the right-side row (menu, Admin,
+   ລາວ / EN / FR switcher) fits on ONE line at phone width: the 8px side
+   margins go (the wrap's 6px gaps take over), Admin drops to .8rem with
+   5px 9px padding, and the switcher buttons to .8rem with 6px 8px
+   padding. (The visitor counter left the header for the footer on
+   11 Nov 2026, so it no longer figures in this row.) */
 @media (max-width:900px){
   .adminbtn{margin-left:0; padding:5px 9px; font-size:.8rem}
   .langbar{margin-left:0}
   .langbar button{padding:6px 8px; font-size:.8rem}
-  .visitorpill{margin-left:0; padding:5px 8px; font-size:.78rem; gap:5px}
-  .visitorpill svg{width:14px; height:14px}
 }
 /* narrow phones: one more tightening step so the same single row holds */
 @media (max-width:400px){
   .menubtn{padding:6px 7px; font-size:.76rem}
   .adminbtn{padding:5px 7px; font-size:.76rem}
   .langbar button{padding:6px 6px; font-size:.76rem}
-  .visitorpill{padding:5px 7px; font-size:.74rem; gap:4px}
-  .visitorpill svg{width:13px; height:13px}
 }
 </style>
 </head>
@@ -473,7 +465,7 @@ html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
     </button>
     <!-- HEADER MENU — ALL IN LINE, AS BEFORE (Founder, 10 Nov 2026: "Just the header menu, you can make it as before show all in line"): the five grouped dropdown tabs are replaced by ONE flat line of direct links in page order — today's correct set ONLY (every visible article/section; nothing deleted, nothing hidden: NO "16 Promises" entry, NO Podcast, NO Mapping entry). The Investor Room stands in the same line as a direct link. Desktop shows the links in line on their own row under the brand row (wrapping cleanly to a second line with the same alignment when the full set cannot fit one line); the phone Menu button opens the same links as an aligned list.
          LAOS TAB HIDDEN (Founder, same instruction — "hide the tab Laos where we hide his content"): the Laos tab/group is REMOVED from this menu entirely (desktop line and phone menu), because its Lao Mapping content is hidden. The Laos in Numbers SECTION (#data) itself STAYS STANDING on the page body — only its header entry is gone while the tab is hidden. To restore in one step: re-add the Laos group here with its #data link (key data_k) and the #mapping link (key map_h) when the Mapping returns or on the Founder's word. See the LAO MAPPING HIDDEN note above the #mapping section below.
-         TIGHTENING + LANGUAGE SWITCHER (Founder, same day, follow-up): the line is tightened (smaller link font and padding, narrower gaps, header band widened to 1360px — logo and Lao lettering untouched) so the 15 links stand on TWO BALANCED rows at desktop width, no third row and no orphan link; and the three-language selector (ລາວ / EN / FR) now stands at the RIGHT-SIDE CORNER of this top header — the Admin button yields the corner to it via flex order, the switcher is the last item of the brand row on desktop and phone, still the page's only switcher, same styling and applyUI wiring. Full note in the header-menu CSS comment above. -->
+         TIGHTENING + LANGUAGE SWITCHER (Founder, same day, follow-up): the line is tightened (smaller link font and padding, narrower gaps, header band widened to 1360px — logo and Lao lettering untouched) so the 15 links stand on TWO BALANCED rows at desktop width, no third row and no orphan link; and the three-language selector (ລາວ / EN / FR) stands in the right-side cluster of this top header — the Admin button first via flex order, the switcher after it, still the page's only switcher, same styling and applyUI wiring. (The visitor counter is no longer in the header — the Founder moved it to the footer, as a button beside the Contact email, 11 Nov 2026.) Full note in the header-menu CSS comment above. -->
     <nav class="tabnav" id="tabnav" aria-label="Sections">
       <a class="tabbtn direct" data-sections="story" href="#story" data-i18n="nav_story">ເລື່ອງເລົ່າຂອງພໍ່ແມ່</a>
       <a class="tabbtn direct" data-sections="journey" href="#journey" data-i18n="nav_journey">ເສັ້ນທາງຊີວິດ</a>
@@ -495,11 +487,6 @@ html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
       <button type="button" data-lang="lo" aria-pressed="true">ລາວ</button>
       <button type="button" data-lang="en" aria-pressed="false">EN</button>
       <button type="button" data-lang="fr" aria-pressed="false">FR</button>
-    </span>
-    <span class="visitorpill" id="visitorPill">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
-      <span data-i18n="visitors_label">ຜູ້ເຂົ້າຊົມ</span>
-      <b id="visitorCount" hidden></b>
     </span>
     <button type="button" class="adminbtn" id="adminOpen">Admin</button>
   </div>
@@ -1218,7 +1205,7 @@ html[lang="lo"] .tabbtn, html[lang="lo"] .menubtn
       </div>
       <div>
         <h3 data-i18n="foot_contact_h">ຕິດຕໍ່</h3>
-        <p><span data-i18n="foot_contact_p">ຕິດຕໍ່ພວກເຮົາທາງອີເມວ:</span><br /><a href="mailto:admin@edu-secu.com">admin@edu-secu.com</a></p>
+        <p><span data-i18n="foot_contact_p">ຕິດຕໍ່ພວກເຮົາທາງອີເມວ:</span><br /><span class="footcontactrow"><a href="mailto:admin@edu-secu.com">admin@edu-secu.com</a><button type="button" class="visitorbtn" id="visitorPill"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg><span data-i18n="visitors_label">ຜູ້ເຂົ້າຊົມ</span><b id="visitorCount" hidden></b></button></span></p>
       </div>
     </div>
     <p class="small" style="margin-top:26px; color:#a9a58e" data-i18n="foot_copy">© 2026 SLCA. ໜ້ານີ້ແມ່ນສະບັບສາທາລະນະສະຖິດຂອງເວັບໄຊໂຄງການ; ເວັບໄຊເຕັມຮູບແບບຈະຕາມມາຢູ່ໂດເມນຂອງຕົນເອງ.</p>
@@ -1822,7 +1809,7 @@ Object.assign(DATA.fr.ui,{
 Object.assign(DATA.lo.ui,{
  navtab_project:"ໂຄງການ",navtab_membership:"ສະມາຊິກ",navtab_community:"ຊຸມຊົນ ແລະ ການສະໜັບສະໜູນ",navtab_laos:"ປະເທດລາວ",navtab_menu:"ເມນູ"});
 
-/* ---------- visitor counter (Founder, 11 Nov 2026): header pill label ---------- */
+/* ---------- visitor counter (Founder, 11 Nov 2026): footer button label ---------- */
 Object.assign(DATA.en.ui,{ visitors_label:"Visitors"});
 Object.assign(DATA.fr.ui,{ visitors_label:"Visiteurs"});
 Object.assign(DATA.lo.ui,{ visitors_label:"ຜູ້ເຂົ້າຊົມ"});
@@ -2263,7 +2250,7 @@ function refreshRegisterTotal(){
 }
 /* Website visitors (Founder, 11 Nov 2026) — totals read from the same actions
    endpoint via getvisitorcount, refreshed each time the admin panel opens.
-   The header pill below shares the last totals read. Countries and referring
+   The footer button below shares the last totals read. Countries and referring
    sites are seen in Cloudflare Web Analytics, opened by the panel's button. */
 var visitorTotals=null, visitorTotalsFailed=false;
 function showVisitorPill(n){
@@ -2286,11 +2273,11 @@ function refreshVisitorTotals(){
     renderVisitorTotals();
   },function(){ visitorTotalsFailed=true; renderVisitorTotals(); });
 }
-/* Header visitor pill: the page keeps a random visitor key in localStorage
+/* Footer visitor button: the page keeps a random visitor key in localStorage
    (no personal data), calls markvisit at most once per browser session
    (sessionStorage flag) and shows the returned visitors number. Any failure
    quietly falls back to getvisitorcount, and then to the label alone — the
-   pill never breaks or blocks the page. */
+   button never breaks or blocks the page. */
 (function(){
   function fallback(){ refreshVisitorTotals(); }
   try{
@@ -2309,7 +2296,7 @@ function refreshVisitorTotals(){
         } else { fallback(); }
       },function(){ fallback(); });
     } else { fallback(); }
-  }catch(e){ /* the pill simply keeps its label */ }
+  }catch(e){ /* the button simply keeps its label */ }
 })();
 document.getElementById("dlBtn").addEventListener("click",function(){
   var blob=new Blob([lastSummary],{type:"text/plain;charset=utf-8"});
