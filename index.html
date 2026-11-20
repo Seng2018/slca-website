@@ -2173,7 +2173,7 @@ document.getElementById("calcSel").addEventListener("change",function(){
    (with the registrant's own referral code) is shown ONLY when the register
    confirms the save. If the save cannot be completed, the page says so
    plainly and keeps the visitor's own copy plus the email route. */
-var REGISTER_ACTIONS_URL="/spaces/v2/student-life-cycle-assurance-project/actions";
+var REGISTER_ACTIONS_URL="/api/register";
 var savedEntries=[], savedCount=0, registerTotal=null;
 function callRegisterAction(action,args){
   var callId="pub-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8);
